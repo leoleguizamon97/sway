@@ -21,6 +21,7 @@
 ###
 
 ### Variables
+
 	# Cambia la variable $background por la ruta de tu wallpaper
 	# O nombra tu wallpaper bg.jpg y guardalo en ~/config/sway/
 	set $background bg.jpg
@@ -35,7 +36,8 @@
 	## a menos que no este instalada
 	
 	# Terminal
-	set $term '' | foot | gnome-terminal | kitty
+		
+		set $term '' | foot | gnome-terminal | kitty
 
 	# Applications
 
@@ -74,6 +76,7 @@
 	exec wl-paste -t text --watch clipman store --no-persist
 
 ### Idle configuration
+
 	exec swayidle \
 		timeout 600 'swaylock -f -e' \
 		before-sleep 'playerctl pause; swaylock'
@@ -286,67 +289,71 @@
 	}
 
 ### Hardware
+
 	# Keyboard
-		# layouts de teclado: US Internacional (con AltGr dead) y Latinoamericano
-		input "type:keyboard" {
-			xkb_layout us,latam
-			xkb_variant altgr-intl 
-			xkb_options "grp:alt_space_toggle"
-			# Comentar en portatiles o segun necesidad
-			xkb_numlock enabled
-		}
+	# layouts de teclado: US Internacional (con AltGr dead) y Latinoamericano
+	input "type:keyboard" {
+		xkb_layout us,latam
+		xkb_variant altgr-intl 
+		xkb_options "grp:alt_space_toggle"
+		# Comentar en portatiles o segun necesidad
+		xkb_numlock enabled
+	}
 
 	# Mouse
-		input type:mouse {
-			accel_profile adaptive
+	input type:mouse {
+		accel_profile adaptive
 
-		}
+	}
 
 	# Touchpad
-		input type:touchpad {
-					dwt enabled
-					tap enabled
-					accel_profile adaptive
-					natural_scroll enabled
-					middle_emulation enabled
-				}
+	input type:touchpad {
+		dwt enabled
+		tap enabled
+		accel_profile adaptive
+		natural_scroll enabled
+		middle_emulation enabled
+	}
 
 	# Screens
-	output * {
-		adaptive_sync on
-	}
 
-	# Configuracion basica para 2 pantallas (Laptop + HDMI)
-	# Borrar o comentar en caso de ser necesario
+		output * {
+			adaptive_sync on
+		}
 
-	#Monitor principal
-	workspace 1 output HDMI-A-1 
-	
-	#Pantalla Integrada (Laptop)
-	output eDP-1 
-	{
-		# Resolución y frecuencia
-		mode 1920x1080@60.049Hz
-		# Posición en el espacio virtual
-		pos 1920 0
-		# Escala
-		scale 1.25
-		# Transformación
-		transform normal
-	}
-	#Pantalla HDMI
-	output HDMI-A-1 
-	{
-		# Resolución y frecuencia
-		mode 1920x1080@74.973Hz
-		# Posición en el espacio virtual
-		pos 0 0
-		# Escala
-		scale 1.0
-		# Transformación
-		transform normal
-	}
+		# Configuracion basica para 2 pantallas (Laptop + HDMI)
+		# Borrar o comentar en caso de ser necesario
+
+			#Monitor principal
+			workspace 1 output HDMI-A-1 
+			
+			#Pantalla Integrada (Laptop)
+			output eDP-1 
+			{
+				# Resolución y frecuencia
+				mode 1920x1080@60.049Hz
+				# Posición en el espacio virtual
+				pos 1920 0
+				# Escala
+				scale 1.0
+				# Transformación
+				transform normal
+			}
+			
+			#Pantalla HDMI
+			output HDMI-A-1 
+			{
+				# Resolución y frecuencia
+				mode 1920x1080@74.973Hz
+				# Posición en el espacio virtual
+				pos 0 0
+				# Escala
+				scale 1.0
+				# Transformación
+				transform normal
+			}
 
 ### Includes
+
 	include /etc/sway/config.d/*
 	include /etc/sway/config-vars.d/*
