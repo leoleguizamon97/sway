@@ -1,27 +1,28 @@
-## README
-# Este archivo esta pensado para configurar SWAY rapidamente y de forma sencilla
-# en una instalacion minima de Ubuntu o Debian con Wayland
-# Ofrece una configuracion, personalizacion y funcionamiento basico
-# suficiente para la mayoria de los usuarios
-# 
-# Se recomienda leer la documentacion oficial de SWAY para entender mejor las opciones
-#
-# Paquetes necesarios:
-# 
-# Obligatorias:
-# sudo apt install sway swaybg swayidle swaylock sway-notification-center
-# 
-# Necesarias:
-# sudo apt install wofi brightnessctl pipewire playerctl
-# 
-# Recomendadas:
-# sudo apt install firefox-esr 
-#
-##
+### README
+	# Este archivo esta pensado para configurar SWAY rapidamente y de forma sencilla
+	# en una instalacion minima de Ubuntu o Debian con Wayland
+	# Ofrece una configuracion, personalizacion y funcionamiento basico
+	# suficiente para la mayoria de los usuarios
+	# 
+	# Se recomienda leer la documentacion oficial de SWAY para entender mejor las opciones
+	#
+	# Paquetes necesarios:
+	# 
+	# Obligatorias:
+	# sudo apt install sway swaybg swayidle swaylock sway-notification-center
+	# 
+	# Necesarias:
+	# sudo apt install wofi brightnessctl pipewire playerctl
+	# 
+	# Recomendadas:
+	# sudo apt install firefox-esr 
+	#
+	# @leoleguizamon97
+###
 
 ### Variables
 	# Cambia la variable $background por la ruta de tu wallpaper
-	# O nombra tu wallpaper bg.png y guardalo en ~/config/sway/
+	# O nombra tu wallpaper bg.jpg y guardalo en ~/config/sway/
 	set $background bg.jpg
 
 	# Cambia la variable $mod por la tecla que prefieras
@@ -57,18 +58,13 @@
 		set $calculator '' | gnome-calculator
 
 		# Your preferred music player
-		set $musicplayer '' | 'spotify'
+		set $musicplayer '' | spotify
 
 		# Your preferred email client
 		set $emailclient '' | firefox --new-tab gmail.com
 
 		# Your preferred calendar
 		set $calendar '' | firefox --new-tab calendar.google.com 
-
-
-
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-	output * bg $background fill
 
 ### Startup applications
 
@@ -77,17 +73,10 @@
 	exec swaync
 	exec wl-paste -t text --watch clipman store --no-persist
 
-# Idle configuration
+### Idle configuration
 	exec swayidle \
 		timeout 600 'swaylock -f -e' \
 		before-sleep 'playerctl pause; swaylock'
-
-# Keyboard
-	input type:keyboard xkb_numlock enabled
-	
-# Mouse
-	input type:mouse accel_profile adaptive
-	seat seat0 xcursor_theme default
 
 ### Key bindings
 
@@ -208,7 +197,7 @@
 		bindsym $mod+equal scratchpad show
 
 
-##Hardware keys
+### Hardware keys bindings
 
 	# Teclas de volumen y audio
 	bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%+
@@ -267,95 +256,103 @@
 	bindsym Print exec $screenshot
 	bindsym Scroll_Lock exec 
 
-#
-# Style
-#
-# General style
 
 
-# Font
-font 'Sans ' 12
 
-# Window borders
-default_border pixel 1
-default_floating_border normal
-hide_edge_borders smart
-smart_gaps on
+### Visual
 
+	# Background
+	output * bg $background fill
 
-# Espaciado exterior alrededor de la pantalla (entre las ventanas y el borde de la pantalla)
+	# Font
+	font 'Sans' 10
 
-# Status Bar:
-# Read `man 5 sway-bar` for more information about this section.
-bar {
-	position top
+	# Window borders
+	default_border pixel 1
+	default_floating_border normal
+	hide_edge_borders smart
+	smart_gaps on
 
-	# When the status_command prints a new line to stdout, swaybar updates.
-	# The default just shows the current date and time.
-	status_command while date +'%Y-%m-%d     %X'; do sleep 1; done
+	# Status Bar:
+	bar {
+		position top
 
-	colors {
-		statusline #ffffff
-		background #323232
-		inactive_workspace #32323200 #32323200 #5c5c5c
- 
-	}
-}
+		# When the status_command prints a new line to stdout, swaybar updates.
+		# The default just shows the current date and time.
+		status_command while date +'%Y-%m-%d     %X'; do sleep 1; done
 
-### Output configuration
-# You can get the names of your outputs by running: swaymsg -t get_outputs
-############################################### Configurar segun cada equipo o directamente borrar
-	#Monitor principal
-	workspace 1 output HDMI-A-1 
+		colors {
+			statusline #ffffff
+			background #323232
+			inactive_workspace #32323200 #32323200 #5c5c5c
 	
-	#Pantalla HDMI
-	output HDMI-A-1 
-	{
-		# Resolución y frecuencia
-		mode 1920x1080@74.973Hz
+		}
+	}
 
-		# Posición en el espacio virtual
-		pos 1920 0
-		
-		# Escala
-		scale 1.0
+### Hardware
+	# Keyboard
+		# layouts de teclado: US Internacional (con AltGr dead) y Latinoamericano
+		input "type:keyboard" {
+			xkb_layout us,latam
+			xkb_variant altgr-intl 
+			xkb_options "grp:alt_space_toggle"
+			# Comentar en portatiles o segun necesidad
+			xkb_numlock enabled
+		}
 
-		# Transformación (sin rotación)
-		transform normal
+	# Mouse
+		input type:mouse {
+			accel_profile adaptive
 
-		# Sync adaptativo (desactivado)
+		}
+
+	# Touchpad
+		input type:touchpad {
+					dwt enabled
+					tap enabled
+					accel_profile adaptive
+					natural_scroll enabled
+					middle_emulation enabled
+				}
+
+	# Screens
+	output * {
 		adaptive_sync on
 	}
 
+	# Configuracion basica para 2 pantallas (Laptop + HDMI)
+	# Borrar o comentar en caso de ser necesario
+
+	#Monitor principal
+	workspace 1 output HDMI-A-1 
+	
 	#Pantalla Integrada (Laptop)
 	output eDP-1 
 	{
 		# Resolución y frecuencia
 		mode 1920x1080@60.049Hz
-
 		# Posición en el espacio virtual
-		pos 3840 0
-
-		# Escala (Cambiar a 1)
+		pos 1920 0
+		# Escala
 		scale 1.25
-
-		# Transformación (sin rotación)
+		# Transformación
 		transform normal
-
-		# Sync adaptativo (desactivado)
-		adaptive_sync on
 	}
-
+	#Pantalla HDMI
+	output HDMI-A-1 
+	{
+		# Resolución y frecuencia
+		mode 1920x1080@74.973Hz
+		# Posición en el espacio virtual
+		pos 0 0
+		# Escala
+		scale 1.0
+		# Transformación
+		transform normal
+	}
 
 	### Input configuration
 
-		input type:touchpad {
-			dwt enabled
-			tap enabled
-			natural_scroll enabled
-			middle_emulation enabled
-		}
-##############################################
-
-include /etc/sway/config.d/*
-include /etc/sway/config-vars.d/*
+### Includes
+	include /etc/sway/config.d/*
+	include /etc/sway/config-vars.d/*
