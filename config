@@ -187,15 +187,14 @@
 			bindsym Return mode "default"
 			bindsym Escape mode "default"
 		}
-	#
+	
 	# Scratchpad:
-	#
+	
 		# Move the currently focused window to the scratchpad
 		bindsym $mod+minus move scratchpad
 
 		# Show the next scratchpad window or hide the focused scratchpad window.
 		bindsym $mod+equal scratchpad show
-
 
 ### Hardware keys bindings
 
@@ -255,9 +254,6 @@
 	bindsym Pause exec $editor
 	bindsym Print exec $screenshot
 	bindsym Scroll_Lock exec 
-
-
-
 
 ### Visual
 
@@ -350,8 +346,6 @@
 		# Transformación
 		transform normal
 	}
-
-	### Input configuration
 
 ### Includes
 	include /etc/sway/config.d/*
