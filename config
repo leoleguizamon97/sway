@@ -80,12 +80,16 @@
 	exec swayidle \
 		timeout 600 'swaylock -f -e' \
 		before-sleep 'playerctl pause; swaylock'
+
 ### Functionality
 
 	default_orientation horizontal
 	workspace_layout default
 	xwayland enable
 	focus_follows_mouse no
+	focus_on_window_activation smart
+	focus_wrapping workspace
+	floating_minimum_size 640 x 480
 
 ### Gestures
 
@@ -115,9 +119,6 @@
 
 		# Reload the configuration file
 		bindsym $mod+c reload
-
-		# Exit sway (logs you out of your Wayland session)
-		bindsym $mod+e exec swaynag -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
 
 		# Notification center
 		bindsym $mod+n exec swaync-client -t -sw
@@ -210,6 +211,21 @@
 			bindsym Return mode "default"
 			bindsym Escape mode "default"
 		}
+
+		set $mode_system   Lock 󰌾  Exit 󰗽  Suspend 󰒲   Reboot 󰦛  Shutdown   UEFI    
+		mode "$mode_system" {
+			bindsym l exec swaylock -f -e mode "default"
+			bindsym e exit
+			bindsym s exec --no-startup-id systemctl suspend, mode "default"
+			bindsym r exec --no-startup-id systemctl reboot, mode "default"
+			bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+			bindsym Shift+r exec --no-startup-id systemctl reboot --firmware-setup, mode "default"
+
+			# return to default mode
+			bindsym Return mode "default"
+			bindsym Escape mode "default"
+		}
+		bindsym $mod+Shift+e mode "$mode_system"
 	
 	# Scratchpad:
 	
@@ -284,21 +300,47 @@
 	output * bg $background fill
 
 	# Font
-	font 'Sans' 10
+	font pango:'Hasklug Nerd Font' 10
+
+	# Colors
+	set $bg1 #32323200
+	set $bg2 #ffffffff
+	set $bg3 #000000ff
+	set $ac1 #2e9ef4ff
+	set $ac2 #4c7899ff
+	set $tx1 #285577ff
+	set $tx2 #888888ff
+	set $tx3 #000000ff
+
+	# class					border	bckGrnd	text	indctr	chldBrdr
+	#client.focused			$ac1	$bg1	$tx1	$ac1	$bg1
+	#client.focused_inactive	$bg1	$bg2	$tx2	$bg1	$bg1
+	#client.unfocused		$bg1	$bg3	$tx2	$bg1	$bg1
+	#client.urgent			$ac1	$bg1	$tx1	$ac1	$bg1
 
 	# Window borders
-	default_border pixel 1
-	default_floating_border normal
+	default_border normal 
+	default_floating_border pixel 1
 	hide_edge_borders smart
-	smart_gaps on
+	smart_borders on
 
+	# Window gaps
+	gaps inner 7
+	smart_gaps on
+	
+	# Titlebars
+	titlebar_border_thickness 1
+	titlebar_padding 5
+	title_align center
+
+	
 	# Status Bar:
 	bar {
 		position top
 
 		# When the status_command prints a new line to stdout, swaybar updates.
 		# The default just shows the current date and time.
-		status_command while date +'%Y-%m-%d     %X'; do sleep 1; done
+		status_command while date +'   %d / %m / %y   󰃭    %X   󱑅 '; do sleep 1; done
 
 		colors {
 			statusline #ffffff
@@ -374,6 +416,5 @@
 			}
 
 ### Includes
-
 	include /etc/sway/config.d/*
 	include /etc/sway/config-vars.d/*
