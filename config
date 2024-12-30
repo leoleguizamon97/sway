@@ -1,12 +1,40 @@
-### Variables
+## README
+# Este archivo esta pensado para configurar SWAY rapidamente y de forma sencilla
+# en una instalacion minima de Ubuntu o Debian con Wayland
+# Ofrece una configuracion, personalizacion y funcionamiento basico
+# suficiente para la mayoria de los usuarios
+# 
+# Se recomienda leer la documentacion oficial de SWAY para entender mejor las opciones
+#
+# Paquetes necesarios:
+# 
+# Obligatorias:
+# sudo apt install sway swaybg swayidle swaylock sway-notification-center
+# 
+# Necesarias:
+# sudo apt install wofi brightnessctl pipewire playerctl
+# 
+# Recomendadas:
+# sudo apt install firefox-esr 
+#
+##
 
-	# Logo key. Use Mod1 for Alt.
+### Variables
+	# Cambia la variable $background por la ruta de tu wallpaper
+	# O nombra tu wallpaper bg.png y guardalo en ~/config/sway/
+	set $background bg.jpg
+
+	# Cambia la variable $mod por la tecla que prefieras
+	# Mod4 (tecla de Windows) Mod1 (tecla Alt) Control (tecla Control)
 	set $mod Mod4
 
-	set $background /usr/share/backgrounds/Numbat_wallpaper_dimmed_3480x2160.png
-
+	## Llena '' con la aplicacion preferida
+	## Borra despues de | si asignaste una app
+	## Si se dejan varias apps en una variable se abriran todas
+	## a menos que no este instalada
+	
 	# Terminal
-	set $term gnome-terminal
+	set $term '' | foot | gnome-terminal | kitty
 
 	# Applications
 
@@ -17,25 +45,25 @@
 		set $browser firefox --new-tab
 
 		# Your preferred file manager
-		set $filemanager nautilus
+		set $filemanager '' | thunar | nautilus 
 
 		# Your preferred text editor
-		set $editor code
+		set $editor '' | code 
 
 		# Your preferred screenshot tool
-		set $screenshot 123
+		set $screenshot '' | ''
 
 		# Your preferred calculator
-		set $calculator gnome-calculator
+		set $calculator '' | gnome-calculator
 
 		# Your preferred music player
-		set $musicplayer spotify
+		set $musicplayer '' | 'spotify'
 
 		# Your preferred email client
-		set $emailclient firefox --new-tab gmail.com
+		set $emailclient '' | firefox --new-tab gmail.com
 
 		# Your preferred calendar
-		set $calendar firefox --new-tab calendar.google.com
+		set $calendar '' | firefox --new-tab calendar.google.com 
 
 
 
@@ -45,8 +73,21 @@
 ### Startup applications
 
 	exec --no-startup-id dunst
+	exec killall dunst
 	exec swaync
+	exec wl-paste -t text --watch clipman store --no-persist
 
+# Idle configuration
+	exec swayidle \
+		timeout 600 'swaylock -f -e' \
+		before-sleep 'playerctl pause; swaylock'
+
+# Keyboard
+	input type:keyboard xkb_numlock enabled
+	
+# Mouse
+	input type:mouse accel_profile adaptive
+	seat seat0 xcursor_theme default
 
 ### Key bindings
 
@@ -170,21 +211,21 @@
 ##Hardware keys
 
 	# Teclas de volumen y audio
-	bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%+
-	bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%-
-	bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-	bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+	bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%+
+	bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 2.5%-
+	bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+	bindsym --locked XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 
 	# Teclas de brillo y pantalla
-	bindsym XF86MonBrightnessUp exec brightnessctl s +10%
-	bindsym XF86MonBrightnessDown exec brightnessctl s 10%-
-	bindsym XF86Display exec swaymsg output eDP-1 enable
+	bindsym --locked XF86MonBrightnessUp exec brightnessctl s +10%
+	bindsym --locked XF86MonBrightnessDown exec brightnessctl s 10%-
+	bindsym XF86Display exec swaymsg output eDP-1 disable #Desactivar pantalla integrada
 
 	# Teclas de control de reproduccion
-	bindsym XF86AudioPlay exec 
-	bindsym XF86AudioStop exec 
-	bindsym XF86AudioNext exec 
-	bindsym XF86AudioPrev exec 
+	bindsym --locked XF86AudioPlay exec playerctl play-pause
+	bindsym --locked XF86AudioStop exec playerctl stop
+	bindsym --locked XF86AudioNext exec playerctl next
+	bindsym --locked XF86AudioPrev exec playerctl previous
 	bindsym XF86Tools exec $musicplayer #Open media player
 
 	# Teclas de red y energia
@@ -207,21 +248,42 @@
 	bindsym XF86LaunchB exec 
 
 	# Teclas de bloqueo y sesion
-	bindsym XF86ScreenSaver exec swaylock -f -e -c 000000
-	bindsym XF86Sleep exec swaylock -f -e -c 000000 && systemctl suspend
+	bindsym XF86ScreenSaver exec swaylock -f -e
+	bindsym XF86Sleep exec systemctl suspend
 
 	# Teclas multimedia adicionales
 	bindsym XF86Eject exec 
 	bindsym XF86AudioMedia exec 
 
 	#Teclas combinadas (Teclas de hardware que son combinaciones de otras) 
-	bindsym $mod+l exec swaylock -f -e -c 000000
+	bindsym $mod+l exec swaylock -f -e
 	bindsym Control+Alt+Tab exec 
 	bindsym $mod+i exec code
+	bindsym $mod+Shift+s exec $screenshot
+	bindsym $mod+p exec swaymsg output eDP-1 toggle #Desactivar pantalla integrada
+
+	#Otras
+	bindsym Pause exec $editor
+	bindsym Print exec $screenshot
+	bindsym Scroll_Lock exec 
 
 #
 # Style
 #
+# General style
+
+
+# Font
+font 'Sans ' 12
+
+# Window borders
+default_border pixel 1
+default_floating_border normal
+hide_edge_borders smart
+smart_gaps on
+
+
+# Espaciado exterior alrededor de la pantalla (entre las ventanas y el borde de la pantalla)
 
 # Status Bar:
 # Read `man 5 sway-bar` for more information about this section.
@@ -230,7 +292,7 @@ bar {
 
 	# When the status_command prints a new line to stdout, swaybar updates.
 	# The default just shows the current date and time.
-	status_command while date +'%Y-%m-%d || %X'; do sleep 1; done
+	status_command while date +'%Y-%m-%d     %X'; do sleep 1; done
 
 	colors {
 		statusline #ffffff
@@ -241,56 +303,59 @@ bar {
 }
 
 ### Output configuration
-
-#Monitor principal
-workspace 1 output HDMI-A-1 
-   output HDMI-A-1 
-   {
-	# Resolución y frecuencia
-	mode 1920x1080@74.973Hz
-
-	# Posición en el espacio virtual
-	pos 1920 0
-	
-	# Escala
-	scale 1.0
-
-	# Transformación (sin rotación)
-	transform normal
-
-	# Sync adaptativo (desactivado)
-	adaptive_sync on
-}
-	#S2
-output eDP-1 
-{
-	# Resolución y frecuencia
-	mode 1920x1080@60.049Hz
-
-	# Posición en el espacio virtual
-	pos 3840 0
-
-	# Escala
-	scale 1.25
-
-	# Transformación (sin rotación)
-	transform normal
-
-	# Sync adaptativo (desactivado)
-	adaptive_sync off
-}
 # You can get the names of your outputs by running: swaymsg -t get_outputs
+############################################### Configurar segun cada equipo o directamente borrar
+	#Monitor principal
+	workspace 1 output HDMI-A-1 
+	
+	#Pantalla HDMI
+	output HDMI-A-1 
+	{
+		# Resolución y frecuencia
+		mode 1920x1080@74.973Hz
+
+		# Posición en el espacio virtual
+		pos 1920 0
+		
+		# Escala
+		scale 1.0
+
+		# Transformación (sin rotación)
+		transform normal
+
+		# Sync adaptativo (desactivado)
+		adaptive_sync on
+	}
+
+	#Pantalla Integrada (Laptop)
+	output eDP-1 
+	{
+		# Resolución y frecuencia
+		mode 1920x1080@60.049Hz
+
+		# Posición en el espacio virtual
+		pos 3840 0
+
+		# Escala (Cambiar a 1)
+		scale 1.25
+
+		# Transformación (sin rotación)
+		transform normal
+
+		# Sync adaptativo (desactivado)
+		adaptive_sync on
+	}
 
 
-### Input configuration
+	### Input configuration
 
-   input "1739:52632:MSFT0001:00_06CB:CD98_Touchpad" {
-	   dwt enabled
-	   tap enabled
-	   natural_scroll enabled
-	   middle_emulation enabled
-   }
-
+		input type:touchpad {
+			dwt enabled
+			tap enabled
+			natural_scroll enabled
+			middle_emulation enabled
+		}
+##############################################
 
 include /etc/sway/config.d/*
 include /etc/sway/config-vars.d/*
