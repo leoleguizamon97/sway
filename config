@@ -80,6 +80,22 @@
 	exec swayidle \
 		timeout 600 'swaylock -f -e' \
 		before-sleep 'playerctl pause; swaylock'
+### Functionality
+
+	default_orientation horizontal
+	workspace_layout default
+	xwayland enable
+	focus_follows_mouse no
+
+### Gestures
+
+	bindgesture swipe:right workspace prev
+	bindgesture swipe:left workspace next
+	bindgesture swipe:up focus parent, move container scratchpad
+	bindgesture swipe:down scratchpad show, floating disable,
+
+	bindgesture pinch:inward floating enable
+	bindgesture pinch:outward floating disable
 
 ### Key bindings
 
@@ -108,6 +124,10 @@
 
 	# Moving around:
 
+		# Switch focus between windows
+		bindsym Alt+Tab focus next
+		bindsym Alt+Shift+Tab focus prev
+		
 		# Move your focus around
 		bindsym $mod+Left focus left
 		bindsym $mod+Down focus down
@@ -123,8 +143,8 @@
 	# Workspaces:
 
 		# Move between workspaces
-		bindsym Alt+Tab workspace next
-		bindsym Alt+Shift+Tab workspace prev
+		bindsym $mod+Tab workspace next
+		bindsym $mod+Shift+Tab workspace prev
 
 		# Switch to workspace
 		bindsym $mod+1 workspace number 1
