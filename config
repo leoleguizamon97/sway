@@ -2,7 +2,7 @@
 
 	# Cambia la variable $background por la ruta de tu wallpaper
 	# O nombra tu wallpaper bg.jpg y guardalo en ~/config/sway/
-	set $background ~/.local/share/backgrounds/bg.jpg
+	set $background bg.jpg
 
 	# Cambia la variable $mod por la tecla que prefieras
 	# Mod4 (tecla de Windows) Mod1 (tecla Alt) Control (tecla Control)
@@ -21,7 +21,7 @@
 		set $browser firefox --new-tab
 
 		# Your preferred file manager
-		set $filemanager thunar 
+		set $filemanager nautilus 
 
 		# Your preferred text editor
 		set $editor code
@@ -48,7 +48,7 @@
 ### Idle configuration
 
 	exec swayidle -w \
-		timeout 600 'swaylock -f -e -K -c 0000' \
+		timeout 1200 'swaylock -f -e -K -c 0000' \
 		timeout 15 'if pgrep -x swaylock; then swaymsg "output * power off"; fi'\
 		resume 'swaymsg "output * power on"'\
 		before-sleep 'playerctl pause'
@@ -245,7 +245,7 @@
 
 ### Modes
 
-		set $mode_system   Lock 󰌾  Exit 󰗽  Suspend 󰒲   Reboot 󰦛  Shutdown   UEFI    
+		set $mode_system   [L] Lock 󰌾  [E] Exit 󰗽  [S] Suspend 󰒲   [R] Reboot 󰦛  [P] Power off   [Shift+E] UEFI    
 		mode "$mode_system" {
 			bindsym l exec swaylock -f -e mode "default"
 			bindsym e exit
@@ -258,7 +258,7 @@
 			bindsym Return mode "default"
 			bindsym Escape mode "default"
 		}
-		bindsym $mod+Shift+e mode "$mode_system"
+		bindsym Control+Alt+Delete mode "$mode_system"
 
 ### Visual
 
@@ -348,14 +348,13 @@
 
 		output * {
 			adaptive_sync on
-			# mode 1366x768@60.049Hz
 		}
 
 		# Configuracion basica para 2 pantallas (Laptop + HDMI)
 		# Borrar o comentar en caso de ser necesario
 
 			#Monitor principal
-			workspace 1 output HDMI-A-1 
+			# workspace 1 output HDMI-A-1 
 			
 			#Pantalla Integrada (Laptop)
 			output eDP-1 
@@ -363,9 +362,9 @@
 				# Resolución y frecuencia
 				# mode 1920x1080@60.049Hz
 				# Posición en el espacio virtual
-				pos 1920 0
+				# pos 1920 0
 				# Escala
-				scale 1
+				scale 1.0
 				# Transformación
 				transform normal
 			}
@@ -374,9 +373,9 @@
 			output HDMI-A-1 
 			{
 				# Resolución y frecuencia
-				mode 1920x1080@74.973Hz
+				# mode 1920x1080@74.973Hz
 				# Posición en el espacio virtual
-				pos 0 0
+				# pos 0 0
 				# Escala
 				scale 1.0
 				# Transformación
