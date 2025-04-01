@@ -2,7 +2,7 @@
 
 	# Cambia la variable $background por la ruta de tu wallpaper
 	# O nombra tu wallpaper bg.jpg y guardalo en ~/config/sway/
-	set $background bg.jpg
+	set $background bg.png
 
 	# Cambia la variable $mod por la tecla que prefieras
 	# Mod4 (tecla de Windows) Mod1 (tecla Alt) Control (tecla Control)
@@ -15,7 +15,7 @@
 	# Applications
 
 		# Your preferred application launcher
-		set $menu wofi --show drun
+		set $menu wofi --show run
 
 		# Your preferred web browser
 		set $browser firefox --new-tab
@@ -48,7 +48,7 @@
 ### Idle configuration
 
 	exec swayidle -w \
-		timeout 1200 'swaylock -f -e -K -c 0000' \
+		timeout 300 'swaylock -f -e -K -c 0000' \
 		timeout 15 'if pgrep -x swaylock; then swaymsg "output * power off"; fi'\
 		resume 'swaymsg "output * power on"'\
 		before-sleep 'playerctl pause'
