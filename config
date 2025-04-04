@@ -60,7 +60,6 @@
 	xwayland enable
 	focus_follows_mouse no
 	focus_on_window_activation smart
-	floating_minimum_size 640 x 480
 
 ### Gestures
 
@@ -270,33 +269,50 @@
 	font pango:'Hasklug Nerd Font' 12
 
 	# Colors
-	set $bg1 #32323200
-	set $bg2 #ffffffff
-	set $bg3 #000000ff
-	set $ac1 #2e9ef4ff
-	set $ac2 #4c7899ff
-	set $tx1 #285577ff
-	set $tx2 #888888ff
-	set $tx3 #000000ff
+	set $brF #81559bdd
+	set $brN #bfacc855
+	set $brU #4e0110
 
-	# class						border	bckGrnd	text	indctr	chldBrdr
-	#client.focused_inactive	$bg1	$bg2	$tx2	$bg1	$bg1
-	#client.focused				$ac1	$bg1	$tx1	$ac1	$bg1
-	#client.unfocused			$bg1	$bg3	$tx2	$bg1	$bg1
-	#client.urgent				$ac1	$bg1	$tx1	$ac1	$bg1
+	set $bgF #81559bdd
+	set $bgN #bfacc855
+	set $bgU #881600
+
+	set $txF #c8c6d7
+	set $txN #bfacc8
+	set $txU #e3e36a
+
+	set $inF #c8f4b9
+	set $inN #bfacc855
+	
+	# Note:
+		# [F] focused: 			Active window
+		# [N] focused_inactive: Not active window in active view
+		# [N] unfocused:		Not active view
+		# [U] urgent:			Window with an urgent message (Not available in native Wayland windows)
+		# ------------
+		# [br] border: The border around the title bar
+		# [bg] background: The background of the title bar and view border
+		# [tx] text: The text color of the title bar.
+		# [in] indicator: The color used to indicate where a new view will open.
+	
+	# class						border	bckGrnd	text	indctr
+	client.focused				$brF	$bgF	$txF	$inF
+	client.focused_inactive		$brN	$bgN	$txN	$inN
+	client.unfocused			$brN	$bgN	$txN	$inN
+	client.urgent				$brU	$bgU	$txU	$inF
 
 	# Window borders
-	default_border 			pixel 1
-	default_floating_border pixel 1
+	default_border 			pixel 2
+	# default_floating_border pixel 2
 	hide_edge_borders 		smart
 	smart_borders 			on
 
-	# LWindow gaps
-	gaps inner 	3
-	# smart_gaps	on
+	# Window gaps
+	gaps inner 	5
+	#smart_gaps	on
 	
 	# Titlebars
-	titlebar_border_thickness	1
+	titlebar_border_thickness	2
 	titlebar_padding			5
 	title_align					center
 	
@@ -315,16 +331,18 @@
 ### Hardware
 
 	# Keyboard
-	# layouts de teclado: US Internacional (con AltGr dead) y Latinoamericano
-	input "type:keyboard" {
-		xkb_layout latam,us
-		xkb_variant ,altgr-intl 
-		xkb_options "grp:alt_space_toggle"
-		# Comentar en portatiles o segun necesidad
-		xkb_numlock enabled
-	}
+
+		# layouts de teclado: US Internacional (con AltGr dead) y Latinoamericano
+		input "type:keyboard" {
+			xkb_layout latam,us
+			xkb_variant ,altgr-intl
+			xkb_options "grp:alt_space_toggle"
+			# Comment if needed
+			xkb_numlock enabled
+		}
 
 	# Mouse
+
 		input type:mouse {
 			accel_profile adaptive
 		}
@@ -332,34 +350,35 @@
 		floating_modifier $mod normal
 
 	# Touchpad
-	input type:touchpad {
-		dwt enabled
-		tap enabled
-		accel_profile adaptive
-		natural_scroll enabled
-		middle_emulation enabled
-	}
+
+		input type:touchpad {
+			dwt enabled
+			tap enabled
+			accel_profile adaptive
+			natural_scroll enabled
+			middle_emulation enabled
+		}
 
 	# Screens
 
-		#General Screen (Vm's or others)
+		# General Screen (Vm's or others)
 		output *
 		{
-			# Resolution and frequency
-			mode 1600x900
-			# Virtual position
+			#Resolution and frequency
+			mode 1920x1080
+			#Virtual position
 			pos 0 0
-			# Scale
+			#Scale
 			scale 1.0
-			# Transformmation
+			#Transformmation
 			transform normal
-			# VSync ¿?
+			#VSync ¿?
 			adaptive_sync on
 		}
 
-		# 2 Screen basic configuration (Laptop + HDMI)
+		# Two Screen basic configuration (Laptop + HDMI)
 		
-			#Define principal monitor
+			#Select principal monitor
 			# workspace 1 output HDMI-A-1 
 
 			
