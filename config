@@ -15,7 +15,7 @@
 	# Applications
 
 		# Your preferred application launcher
-		set $menu wofi --show run
+		set $menu wofi --show drun
 
 		# Your preferred web browser
 		set $browser firefox --new-tab
@@ -39,7 +39,7 @@
 		set $calendar firefox --new-tab calendar.google.com
 
 		# Your preferred system monitor
-		set $sysmonitor $term -e top
+		set $sysmonitor $term -e btop
 
 ### Startup applications
 
@@ -183,14 +183,14 @@
 	# Descomentar y configurar segun necesidad
 
 	# Teclas de volumen y audio
-	bindsym --locked XF86AudioRaiseVolume	exec wpctl set-volume	@DEFAULT_AUDIO_SINK@ 2.5%+
-	bindsym --locked XF86AudioLowerVolume	exec wpctl set-volume	@DEFAULT_AUDIO_SINK@ 2.5%-
+	bindsym --locked XF86AudioRaiseVolume	exec wpctl set-volume	@DEFAULT_AUDIO_SINK@ 2%+
+	bindsym --locked XF86AudioLowerVolume	exec wpctl set-volume	@DEFAULT_AUDIO_SINK@ 2%-
 	bindsym --locked XF86AudioMute			exec wpctl set-mute		@DEFAULT_AUDIO_SINK@ toggle
 	bindsym --locked XF86AudioMicMute		exec wpctl set-mute		@DEFAULT_AUDIO_SOURCE@ toggle
 
 	# Teclas de brillo y pantalla
-	bindsym --locked XF86MonBrightnessUp 	exec brightnessctl s +10%
-	bindsym --locked XF86MonBrightnessDown 	exec brightnessctl s 10%-
+	bindsym --locked XF86MonBrightnessUp 	exec brightnessctl s +5%
+	bindsym --locked XF86MonBrightnessDown 	exec brightnessctl s 5%-
 	bindsym --locked XF86Display 			exec swaymsg output eDP-1 disable
 
 	# Teclas de control de reproduccion
@@ -237,7 +237,7 @@
 	bindsym $mod+p 							exec swaymsg output eDP-1 toggle #Desactivar pantalla integrada
 
 	#Otras
-	bindsym Control+Alt+Tab 				exec $sysmonitor				 #Abrir monitor de sistema
+	bindsym Control+Shift+Escape			exec $sysmonitor				 #Abrir monitor de sistema
 
 	bindsym Pause							exec $editor
 	bindsym Print							exec 
@@ -267,7 +267,7 @@
 	#output * bg #000000 solid_color
 
 	# Font
-	font pango:'Hasklug Nerd Font' 10
+	font pango:'Hasklug Nerd Font' 12
 
 	# Colors
 	set $bg1 #32323200
@@ -279,38 +279,34 @@
 	set $tx2 #888888ff
 	set $tx3 #000000ff
 
-	# class					border	bckGrnd	text	indctr	chldBrdr
+	# class						border	bckGrnd	text	indctr	chldBrdr
 	#client.focused_inactive	$bg1	$bg2	$tx2	$bg1	$bg1
-	#client.focused			$ac1	$bg1	$tx1	$ac1	$bg1
-	#client.unfocused		$bg1	$bg3	$tx2	$bg1	$bg1
-	#client.urgent			$ac1	$bg1	$tx1	$ac1	$bg1
+	#client.focused				$ac1	$bg1	$tx1	$ac1	$bg1
+	#client.unfocused			$bg1	$bg3	$tx2	$bg1	$bg1
+	#client.urgent				$ac1	$bg1	$tx1	$ac1	$bg1
 
 	# Window borders
-	default_border pixel 1
+	default_border 			pixel 1
 	default_floating_border pixel 1
-	hide_edge_borders smart
-	smart_borders on
+	hide_edge_borders 		smart
+	smart_borders 			on
 
 	# Window gaps
-	gaps inner 3
-	smart_gaps on
+	gaps inner 	3
+	smart_gaps	on
 	
 	# Titlebars
-	titlebar_border_thickness 1
-	titlebar_padding 5
-	title_align center
+	titlebar_border_thickness	1
+	titlebar_padding			5
+	title_align					center
 	
 	# Status Bar:
 	bar {
 		position top
-
-		# When the status_command prints a new line to stdout, swaybar updates.
-		# The default just shows the current date and time.
-		status_command while date +'   %d / %m / %y   󰃭    %X   󱑅 '; do sleep 1; done
-
+		status_command ~/.config/sway/status.sh
 		colors {
 			statusline #ffffff
-			background #323232
+			background #32323277
 			inactive_workspace #32323200 #32323200 #5c5c5c
 	
 		}
