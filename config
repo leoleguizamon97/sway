@@ -342,40 +342,43 @@
 
 	# Screens
 
-		output * {
+		#General Screen (Vm's or others)
+		output *
+		{
+			# Resolution and frequency
+			mode 1600x900
+			# Virtual position
+			pos 0 0
+			# Scale
+			scale 1.0
+			# Transformmation
+			transform normal
+			# VSync ¿?
 			adaptive_sync on
 		}
 
-		# Configuracion basica para 2 pantallas (Laptop + HDMI)
-		# Borrar o comentar en caso de ser necesario
-
-			#Monitor principal
+		# 2 Screen basic configuration (Laptop + HDMI)
+		
+			#Define principal monitor
 			# workspace 1 output HDMI-A-1 
+
 			
 			#Pantalla Integrada (Laptop)
 			output eDP-1 
 			{
-				# Resolución y frecuencia
 				# mode 1920x1080@60.049Hz
-				# Posición en el espacio virtual
 				# pos 1920 0
-				# Escala
-				scale 1.0
-				# Transformación
-				transform normal
+				# scale 1.0
+				# transform normal
 			}
 			
-			#Pantalla HDMI
+			#HDMI Screen
 			output HDMI-A-1 
 			{
-				# Resolución y frecuencia
 				# mode 1920x1080@74.973Hz
-				# Posición en el espacio virtual
 				# pos 0 0
-				# Escala
-				scale 1.0
-				# Transformación
-				transform normal
+				# scale 1.0
+				# transform normal
 			}
 
 ### Includes
