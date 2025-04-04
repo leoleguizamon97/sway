@@ -245,9 +245,9 @@
 
 ### Modes
 
-		set $mode_system   [L] Lock 󰌾  [E] Exit 󰗽  [S] Suspend 󰒲   [R] Reboot 󰦛  [P] Power off   [Shift+E] UEFI    
+		set $mode_system   [L] Lock 󰌾  [E] Exit 󰗽  [S] Suspend 󰒲   [R] Reboot 󰦛  [Shift+E] Power off   [Shift+E] UEFI    
 		mode "$mode_system" {
-			bindsym l exec swaylock -f -e mode "default"
+			bindsym l exec swaylock -f -e -K -c 0000
 			bindsym e exit
 			bindsym s exec --no-startup-id systemctl suspend, mode "default"
 			bindsym r exec --no-startup-id systemctl reboot, mode "default"
@@ -291,9 +291,9 @@
 	hide_edge_borders 		smart
 	smart_borders 			on
 
-	# Window gaps
+	# LWindow gaps
 	gaps inner 	3
-	smart_gaps	on
+	# smart_gaps	on
 	
 	# Titlebars
 	titlebar_border_thickness	1
