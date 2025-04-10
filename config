@@ -1,12 +1,10 @@
 ### Variables
 
+	set $mod Mod4
+
 	# Cambia la variable $background por la ruta de tu wallpaper
 	# O nombra tu wallpaper bg.jpg y guardalo en ~/config/sway/
 	set $background bg.png
-
-	# Cambia la variable $mod por la tecla que prefieras
-	# Mod4 (tecla de Windows) Mod1 (tecla Alt) Control (tecla Control)
-	set $mod Mod4
 	
 	# Terminal
 		
@@ -24,7 +22,7 @@
 		set $filemanager ""
 
 		# Your preferred text editor
-		set $editor code
+		set $editor $term -e micro
 
 		# Your preferred calculator
 		set $calculator ""
