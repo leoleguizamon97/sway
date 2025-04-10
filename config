@@ -69,9 +69,6 @@
 	bindgesture swipe:up focus parent, move container scratchpad
 	bindgesture swipe:down scratchpad show, floating disable,
 
-	bindgesture pinch:inward floating enable
-	bindgesture pinch:outward floating disable
-
 ### Key bindings
 
 	# Basics
