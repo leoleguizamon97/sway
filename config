@@ -264,7 +264,7 @@
 
 	# Background
 	output * bg $background fill
-	#output * bg #000000 solid_color
+	output * bg #000000 solid_color
 
 	# Font
 	font pango:'Hasklug Nerd Font' 12
@@ -277,6 +277,7 @@
 	set $bgF #81559bdd
 	set $bgN #bfacc855
 	set $bgU #881600
+	set $bgB #81559b44
 
 	set $txF #c8c6d7
 	set $txN #bfacc8
@@ -290,6 +291,7 @@
 		# [N] focused_inactive: Not active window in active view
 		# [N] unfocused:		Not active view
 		# [U] urgent:			Window with an urgent message (Not available in native Wayland windows)
+		# [B] bar:				Status bar
 		# ------------
 		# [br] border: The border around the title bar
 		# [bg] background: The background of the title bar and view border
@@ -310,7 +312,7 @@
 
 	# Window gaps
 	gaps inner 	5
-	#smart_gaps	on
+	smart_gaps	off
 	
 	# Titlebars
 	titlebar_border_thickness	2
@@ -322,10 +324,11 @@
 		position top
 		status_command ~/.config/sway/status.sh
 		colors {
-			statusline #ffffff
-			background #32323277
-			inactive_workspace #32323200 #32323200 #5c5c5c
-	
+			statusline $txN
+			background $bgB
+			focused_workspace	#00000000 #00000000 $txN
+			inactive_workspace	$bgB $bgB $txN
+			urgent_workspace	$bgU $brU $txU
 		}
 	}
 
@@ -344,10 +347,11 @@
 
 	# Mouse
 
+		# Aceleracion de raton
 		input type:mouse {
 			accel_profile adaptive
 		}
-		# mouse button for dragging.
+		# Boton de raton para movimiento de ventanas
 		floating_modifier $mod normal
 
 	# Touchpad
@@ -377,11 +381,10 @@
 			adaptive_sync on
 		}
 
-		# Two Screen basic configuration (Laptop + HDMI)
+		# Configuracion basica para dos pantallas (Laptop + HDMI)
 		
-			#Select principal monitor
+			#Seleccionar monitor principal
 			# workspace 1 output HDMI-A-1 
-
 			
 			#Pantalla Integrada (Laptop)
 			output eDP-1 
@@ -392,7 +395,7 @@
 				# transform normal
 			}
 			
-			#HDMI Screen
+			#Pantalla HDMI
 			output HDMI-A-1 
 			{
 				# mode 1920x1080@74.973Hz
