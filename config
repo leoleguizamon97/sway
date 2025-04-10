@@ -18,10 +18,10 @@
 		set $menu wofi --show drun
 
 		# Your preferred web browser
-		set $browser firefox --new-tab
+		set $browser brave-browser --new-tab
 
 		# Your preferred file manager
-		set $filemanager nautilus 
+		set $filemanager ""
 
 		# Your preferred text editor
 		set $editor code
@@ -33,10 +33,10 @@
 		set $musicplayer ""
 
 		# Your preferred email client
-		set $emailclient firefox --new-tab gmail.com
+		set $emailclient brave-browser --new-tab gmail.com
 
 		# Your preferred calendar
-		set $calendar firefox --new-tab calendar.google.com
+		set $calendar brave-browser --new-tab calendar.google.com
 
 		# Your preferred system monitor
 		set $sysmonitor $term -e btop
@@ -86,7 +86,7 @@
 		bindsym $mod+Shift+l		reload
 
 		# Notification center
-		bindsym $mod+g				exec 
+		bindsym $mod+g				exec
 
 	# Moving around:
 
@@ -186,8 +186,8 @@
 	bindsym --locked XF86AudioMicMute		exec wpctl set-mute		@DEFAULT_AUDIO_SOURCE@ toggle
 
 	# Teclas de brillo y pantalla
-	bindsym --locked XF86MonBrightnessUp 	exec brightnessctl s +5%
-	bindsym --locked XF86MonBrightnessDown 	exec brightnessctl s 5%-
+	bindsym --locked XF86MonBrightnessUp 	exec brightnessctl s +1%
+	bindsym --locked XF86MonBrightnessDown 	exec brightnessctl s 1%-
 	bindsym --locked XF86Display 			exec swaymsg output eDP-1 disable
 
 	# Teclas de control de reproduccion
@@ -229,8 +229,8 @@
 	bindsym $mod+l							exec swaylock -f -e -K
 	bindsym $mod+Shift+s					exec 
 	
-	bindsym $mod+i 							exec 							 #IIIIPPPOOOiiBoton config
-	bindsym $mod+o 							exec							 
+	bindsym $mod+i 							exec 							 #Boton Internet
+	bindsym $mod+o 							exec							 #Boton Opciones
 	bindsym $mod+p 							exec swaymsg output eDP-1 toggle #Desactivar pantalla integrada
 
 	#Otras
