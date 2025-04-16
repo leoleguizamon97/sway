@@ -19,13 +19,13 @@
 		set $browser brave-browser --new-tab
 
 		# Your preferred file manager
-		set $filemanager ""
+		set $filemanager "nautilus"
 
 		# Your preferred text editor
-		set $editor $term -e micro
+		set $editor obsidian
 
 		# Your preferred calculator
-		set $calculator ""
+		set $calculator "gnome-calculator"
 
 		# Your preferred music player
 		set $musicplayer ""
@@ -47,9 +47,9 @@
 
 	exec swayidle -w \
 		timeout 300 'swaylock -f -e -K -c 0000' \
-		timeout 315 'if pgrep -x swaylock; then swaymsg "output * power off"; fi'\
-		timeout 15 'if pgrep -x swaylock; then swaymsg "output * power off"; fi'\
-		resume 'swaymsg "output * power on"'\
+		timeout 310 'if pgrep -x swaylock; then swaymsg "output '*' dpms off"; fi'\
+		timeout 15  'if pgrep -x swaylock; then swaymsg "output '*' dpms off"; fi'\
+		resume 'swaymsg "output '*' dpms on"'\
 		before-sleep 'playerctl pause'
 
 ### Functionality
@@ -62,10 +62,10 @@
 
 ### Gestures
 
-	bindgesture swipe:right workspace prev
-	bindgesture swipe:left workspace next
-	bindgesture swipe:up focus parent, move container scratchpad
-	bindgesture swipe:down scratchpad show, floating disable,
+	#bindgesture swipe:right workspace prev
+	#bindgesture swipe:left workspace next
+	#bindgesture swipe:up focus parent, move container scratchpad
+	#bindgesture swipe:down scratchpad show, floating disable,
 
 ### Key bindings
 
@@ -364,13 +364,13 @@
 		output *
 		{
 			#Resolution and frequency
-			mode 1920x1080
+			# mode 1920x1080
 			#Virtual position
-			pos 0 0
+			# pos 0 0
 			#Scale
-			scale 1.0
+			# scale 1.0
 			#Transformmation
-			transform normal
+			# transform normal
 			#VSync ¿?
 			adaptive_sync on
 		}
@@ -378,24 +378,24 @@
 		# Configuracion basica para dos pantallas (Laptop + HDMI)
 		
 			#Seleccionar monitor principal
-			# workspace 1 output HDMI-A-1 
+			workspace 1 output HDMI-A-1 
 			
 			#Pantalla Integrada (Laptop)
 			output eDP-1 
 			{
-				# mode 1920x1080@60.049Hz
-				# pos 1920 0
-				# scale 1.0
-				# transform normal
+				# mode 1366x768
+				pos 1920 0
+				scale 1.0
+				transform normal
 			}
 			
 			#Pantalla HDMI
 			output HDMI-A-1 
 			{
-				# mode 1920x1080@74.973Hz
-				# pos 0 0
-				# scale 1.0
-				# transform normal
+				mode 1920x1080
+				pos 0 0
+				scale 1.0
+				transform normal
 			}
 
 ### Includes
