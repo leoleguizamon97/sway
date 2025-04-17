@@ -245,12 +245,12 @@
 
 ### Modes
 
-		set $mode_system   [L] Lock 󰌾  [E] Exit 󰗽  [S] Suspend 󰒲   [R] Reboot 󰦛  [Shift+S] Power off  
+		set $mode_system   [L] Lock 󰌾  [S] Suspend 󰒲   [Shift+E] Exit 󰗽  [Shift+R] Reboot 󰦛  [Shift+S] Power off  
 		mode "$mode_system" {
 			bindsym l exec swaylock -f -e -K -c 0000
-			bindsym e exit
 			bindsym s exec --no-startup-id systemctl suspend, mode "default"
-			bindsym r exec --no-startup-id systemctl reboot, mode "default"
+			bindsym Shift+e exit
+			bindsym Shift+r exec --no-startup-id systemctl reboot, mode "default"
 			bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
 			# return to default mode
