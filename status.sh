@@ -1,107 +1,157 @@
-# SIMPLE BAR# status_command while date +'   %d / %m / %y   󰃭    %X   󱑅 '; do sleep 1; done
-# while echo -n "$(swaymsg -t get_tree | jq -r '.. | objects | select(.focused?) | .name')  $(  iw dev | grep "ssid" | awk '{print $2}')   $(ip -4 addr show | awk '/inet / && !/127.0.0.1/ {print $2}' | cut -d/ -f1) 󰩟  $(date +'%d / %m / %y') 󰃭  $( date +'%H:%M' ) 󱑅  $(cat /sys/class/power_supply/BAT0/capacity)% 󱊣 "; do sleep 1; done
+CHASSIS=$(hostnamectl chassis)
 
 while true; do
 
-##### Estado de la red ####
-    # Obtener SSID
-    SSID=$(iw dev | grep ssid | awk '{print $2}')
-    [ -z "$SSID" ] && SSID="Desconectado"
+#### Estado de la red ####
+	
+	# Obtener la conexión activa
+	ACTIVE_CONNECTION=$(nmcli -t device | grep ':connected' | head -n1)
 
-    # Obtener IP
-    IP=$(ip -4 addr show | awk '/inet / && !/127.0.0.1/ {print $2}' | cut -d/ -f1)
+	DEVICE=$(echo "$ACTIVE_CONNECTION" | cut -d: -f1)
+	TYPE=$(echo "$ACTIVE_CONNECTION" | cut -d: -f2)
 
-### Estado de la batería ##
-    
-    # Ver si tiene batería
-    LAPTOP=1
+	if [ "$TYPE" = "wifi" ]; then
+		SSID=$(nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -d: -f2)
+		SSID="$SSID 󰤨"
+	elif [ "$TYPE" = "ethernet" ]; then
+		if [[ "$DEVICE" == enx* || "$DEVICE" == usb* ]]; then
+			SSID="Bridged 󰌘"
+		else
+			SSID="$DEVICE 󰈀"
+		fi
+	elif [ "$TYPE" = "loopback" ]; then
+		SSID="Offline 󰌙"
+	else
+		SSID="Unknown "
+	fi
 
-    if [ -d "/sys/class/power_supply/BAT0" ]; then
-        LAPTOP=0
-    fi
+	# Obtener IP de conexión activa
+	IP=$(nmcli -t -f IP4.ADDRESS device show "$DEVICE" | cut -d: -f2)
 
-    # Obtener fuente de energía
-    AC=$(cat /sys/class/power_supply/AC0/online)
+	if [ "$TYPE" = "loopback" ]; then
+		IP="$IP 󱦂"
+	else
+		IP="$IP 󰩟"
+	fi
 
-    # Obtener nivel de batería
-    BATTERY=$(cat /sys/class/power_supply/BAT0/capacity)
+#### Estado de la batería ####
 
-    # Cambiar icono dependiendo del nivel de batería
-    if [ "$BATTERY" -gt "90" ]; then
-        BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂅' || echo '󰁹' )"
-    elif [ "$BATTERY" -gt "80" ]; then
-        BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂊' || echo '󰂁' )"
-    elif [ "$BATTERY" -gt "70" ]; then
-        BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰢞' || echo '󰂀' )"
-    elif [ "$BATTERY" -gt "60" ]; then
-        BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂉' || echo '󰁿' )"
-    elif [ "$BATTERY" -gt "50" ]; then
-        BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰢝' || echo '󰁾' )"
-    elif [ "$BATTERY" -gt "40" ]; then
-        BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂈' || echo '󰁽' )"
-    elif [ "$BATTERY" -gt "30" ]; then
-        BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂇' || echo '󰁼' )"
-    elif [ "$BATTERY" -gt "20" ]; then
-        BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂆' || echo '󰁻' )"
-    elif [ "$BATTERY" -gt "10" ]; then
-        BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰢜' || echo '󰁺' )"
-    else
-        BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰢟' || echo '󰂃' )"
-    fi
+	# Obtener fuente de energía
+	#AC=$(cat /sys/class/power_supply/AC0/online)
+	
+	AC_PATH=$(find /sys/class/power_supply/ -maxdepth 1 -type d -name "AC*" | head -n1)
+	BAT_PATH=$(find /sys/class/power_supply/ -maxdepth 1 -type d -name "BAT*" | head -n1)
+	AC=$(cat "$AC_PATH/online")
+	BATTERY=$(cat "$BAT_PATH/capacity")
+	
+	# Obtener nivel de batería
+	# BATTERY=$(cat /sys/class/power_supply/BAT0/capacity)
+	# Cambiar icono dependiendo del nivel de batería
+	if [ "$BATTERY" -gt "90" ]; then
+		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂅' || echo '󰁹' )"
+	elif [ "$BATTERY" -gt "80" ]; then
+		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂊' || echo '󰂁' )"
+	elif [ "$BATTERY" -gt "70" ]; then
+		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰢞' || echo '󰂀' )"
+	elif [ "$BATTERY" -gt "60" ]; then
+		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂉' || echo '󰁿' )"
+	elif [ "$BATTERY" -gt "50" ]; then
+		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰢝' || echo '󰁾' )"
+	elif [ "$BATTERY" -gt "40" ]; then
+		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂈' || echo '󰁽' )"
+	elif [ "$BATTERY" -gt "30" ]; then
+		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂇' || echo '󰁼' )"
+	elif [ "$BATTERY" -gt "20" ]; then
+		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂆' || echo '󰁻' )"
+	elif [ "$BATTERY" -gt "10" ]; then
+		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰢜' || echo '󰁺' )"
+	else
+		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰢟' || echo '󰂃' )"
+	fi
 
-##### Obtener volumen #####
-    VOL="$(pactl list sinks | grep -om 1 '[0-9]\+%' | awk '{sum += $1} END {if (NR > 0) print int(sum/NR)}')"
+#### Obtener volumen ####
 
-    # Cambiar icono dependiendo del volumen
-    if [ "$VOL" -gt "50" ]; then
-        VOL="$VOL 󰕾"
-    elif [ "$VOL" -gt "20" ]; then
-        VOL="$VOL 󰖀"
-    elif [ "$VOL" -eq "0" ]; then
-        VOL="$VOL 󰝟"
-    else
-        VOL="$VOL 󰕿"
-    fi
+	VOL="$(pactl list sinks | grep -om 1 '[0-9]\+%' | awk '{sum += $1} END {if (NR > 0) print int(sum/NR)}')"
 
-    # Detectar si el audio está muteado
-    IS_MUTED=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')
+	# Cambiar icono dependiendo del volumen
+	if [ "$VOL" -gt "50" ]; then
+		VOL="$VOL 󰕾"
+	elif [ "$VOL" -gt "20" ]; then
+		VOL="$VOL 󰖀"
+	elif [ "$VOL" -eq "0" ]; then
+		VOL="$VOL 󰝟"
+	else
+		VOL="$VOL 󰕿"
+	fi
 
-    if [ "$IS_MUTED" != "no" ]; then
-        VOL="󰝟"
-    fi
-###########################
+	# Detectar si el audio está muteado
+	IS_MUTED=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print $2}')
 
-    # Obtener brillo
-    BRIGHTNESS=$(brightnessctl -P get)
+	if [ "$IS_MUTED" != "no" ]; then
+		VOL="No Audio 󰝟"
+	fi
+	
+#### Obtener brillo ####
+	SCREEN=false
+	if [[ "$CHASSIS" == "laptop" || "$CHASSIS" == "convertible" || "$CHASSIS" == "tablet" || "$CHASSIS" == "handset" ]]; then
+		SCREEN=true
+	fi
 
-    # Cambiar icono dependiendo del brillo
-    if [ "$BRIGHTNESS" -gt "60" ]; then
-        BRIGHTNESS="$BRIGHTNESS 󰃠"
-    elif [ "$BRIGHTNESS" -gt "30" ]; then
-        BRIGHTNESS="$BRIGHTNESS 󰃟"
-    else
-        BRIGHTNESS="$BRIGHTNESS 󰃞"
-    fi
+	if [ "$SCREEN" = true ]; then
+		# Obtener brillo
+		BRIGHTNESS=$(brightnessctl get)
+		MAX_BRIGHTNESS=$(brightnessctl max)
 
-######### Basicos #########
-    # Obtener título de la ventana activa
-    WINDOW=$(swaymsg -t get_tree | jq -r '.. | objects | select(.focused?) | .name')
+		# Normalizar brillo
+		BRIGHTNESS=$(( $BRIGHTNESS * 100 / $MAX_BRIGHTNESS ))
 
-    # Fecha
-    DATE=$(date +"%d / %m / %y")
+		# Cambiar icono dependiendo del brillo
+		if [ "$BRIGHTNESS" -gt "60" ]; then
+			BRIGHTNESS="$BRIGHTNESS 󰃠"
+		elif [ "$BRIGHTNESS" -gt "30" ]; then
+			BRIGHTNESS="$BRIGHTNESS 󰃟"
+		else
+			BRIGHTNESS="$BRIGHTNESS 󰃞"
+		fi
+	fi
 
-    # Hora
-    TIME=$(date +"%H:%M")
-###########################
+#### Datos basicos ####
 
-    # Tipo de barra segun si es portatil o no
-    if [ "$LAPTOP" = 0 ]; then
-        echo -n " $WINDOW  $SSID    $IP 󰩟  $VOL  $BRIGHTNESS  $BATTERY  $DATE 󰃭  $TIME 󱑅 "
-    else
-        echo -n " $WINDOW  $SSID    $IP 󰩟  $VOL  $DATE 󰃭  $TIME 󱑅 "
-    fi
-    sleep 0.3
+	# Obtener título de la ventana activa
+	WINDOW=$(swaymsg -t get_tree | jq -r '.. | objects | select(.focused?) | .name' | awk -F ' - ' '{ print $NF }')
+
+	# Fecha
+	DATE=$(date +"%d / %m / %y ")󰃭
+
+	# Hora
+	TIME=$(date +"%H:%M ")󱑅
+
+	# Obtener temperatura
+	TEMP=$(cat /sys/class/thermal/thermal_zone0/temp | awk '{print $1/1000}')
+
+	if [ "$TEMP" -ge 65 ]; then
+		TEMP="$TEMP󰔄 "
+	elif [ "$TEMP" -ge 50 ]; then
+		TEMP="$TEMP󰔄 "
+	elif [ "$TEMP" -ge 40 ]; then
+		TEMP="$TEMP󰔄 "
+	else
+		TEMP="$TEMP󰔄 "
+	fi
+
+#### Imprimir barra ####
+
+	# Tipo de barra segun segun chasis
+	if [ "$CHASSIS" = "vm" ]; then
+		echo -n " $WINDOW  $SSID  $IP    $DATE   $TIME "
+	elif [ "$CHASSIS" = "laptop" ]; then
+		echo -n " $WINDOW  $SSID  $IP  $VOL  $BRIGHTNESS  $BATTERY  $TEMP  $DATE   $TIME "
+	elif [ "$CHASSIS" = "desktop" ]; then
+		echo -n " $WINDOW  $SSID  $IP  $VOL  $TEMP  $DATE   $TIME "
+	else
+		echo -n " $WINDOW  $SSID  $IP  $VOL  $DATE   $TIME "
+	fi
+	sleep 1
+
 done
 
-    # Obtener temperatura
-    # TEMP=$(cat /sys/class/thermal/thermal_zone0/temp | awk '{print $1/1000}')
