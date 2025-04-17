@@ -229,7 +229,7 @@
 
 	#Teclas combinadas (Teclas de hardware que son combinaciones de otras) 
 	bindsym $mod+l							exec swaylock -f -e -K
-	bindsym $mod+Shift+s					exec 
+	bindsym $mod+Shift+s					exec  ~/.config/sway/screenshot.sh 0
 	
 	bindsym $mod+i 							exec 							 #Boton Internet
 	bindsym $mod+o 							exec							 #Boton Opciones
@@ -239,7 +239,8 @@
 	bindsym Control+Shift+Escape			exec $sysmonitor				 #Abrir monitor de sistema
 
 	bindsym Pause							exec $editor
-	bindsym Print							exec 
+	bindsym Print							exec ~/.config/sway/screenshot.sh 1
+
 	bindsym Scroll_Lock						exec 
 
 ### Modes
