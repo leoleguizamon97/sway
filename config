@@ -14,6 +14,7 @@
 
 		# Your preferred application launcher
 		set $menu wofi --show drun
+		set $altMenu wofi --show run
 
 		# Your preferred web browser
 		set $browser brave-browser --new-tab
@@ -79,6 +80,9 @@
 
 		# Start your launcher
 		bindsym $mod+Return			exec $menu
+
+		# Start your launcher
+		bindsym $mod+Alt+Return 	exec $altMenu
 
 		# Reload the configuration file
 		bindsym $mod+Shift+l		reload
@@ -258,7 +262,7 @@
 
 	# Background
 	output * bg $background fill
-	output * bg #000000 solid_color
+	#output * bg #000000 solid_color
 
 	# Font
 	font pango:'Hasklug Nerd Font' 12
