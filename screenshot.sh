@@ -3,16 +3,21 @@ DIR="$HOME/Pictures/Screenshots"
 mkdir -p "$DIR"
 FILENAME="$DIR/ss$(date +'%d%m%y-%H%M%S').png"
 
-notify-send $1
-
 case $1 in
 	0)
 		# Capturar área seleccionada
-		grim -g "$(slurp)" "$FILENAME"
-		
+		AREA=$(slurp)
+		if [ -z "$AREA" ]; then
+			notify-send "Captura cancelada" "No se seleccionó un área válida"
+			exit 1
+		fi
+
+		grim -g "$AREA" "$FILENAME"
+
 		# Copiar al portapapeles
 		wl-copy < "$FILENAME"
-		notify-send "Captura de pantalla - Area seleccionada" "$FILENAME"
+		notify-send "Captura de pantalla - Área seleccionada" "$FILENAME"
+
 		;;	
 	1)	
 		# Capturar pantalla completa

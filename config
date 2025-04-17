@@ -369,7 +369,7 @@
 		output *
 		{
 			#Resolution and frequency
-			# mode 1920x1080
+			mode 1920x1080
 			#Virtual position
 			# pos 0 0
 			#Scale
