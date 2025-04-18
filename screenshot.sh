@@ -8,7 +8,7 @@ case $1 in
 		# Capturar área seleccionada
 		AREA=$(slurp)
 		if [ -z "$AREA" ]; then
-			notify-send "Captura cancelada" "No se seleccionó un área válida"
+			notify-send -u normal "Captura cancelada" "No se seleccionó un área válida"
 			exit 1
 		fi
 
@@ -16,7 +16,7 @@ case $1 in
 
 		# Copiar al portapapeles
 		wl-copy < "$FILENAME"
-		notify-send "Captura de pantalla - Área seleccionada" "$FILENAME"
+		notify-send -u low "Captura de pantalla - Área seleccionada" "$FILENAME"
 
 		;;	
 	1)	
@@ -25,9 +25,9 @@ case $1 in
 
 		# Copiar al portapapeles
 		wl-copy < "$FILENAME"
-		notify-send "Captura de pantalla - Pantalla completa" "$FILENAME"
+		notify-send -u low "Captura de pantalla - Pantalla completa" "$FILENAME"
 		;;
 	*)
-		notify-send "Opcion no valida"
+		notify-send -u critical "Opcion no valida"
 		;;
 esac
