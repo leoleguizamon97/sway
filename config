@@ -47,8 +47,8 @@
 ### Idle configuration
 
 	exec swayidle -w \
-		timeout 300 'swaylock \
-		timeout 310 'if pgrep -x swaylock; then swaymsg "output '*' dpms off"; fi'\
+		timeout 300 'swaylock' \
+		timeout 315 'if pgrep -x swaylock; then swaymsg "output '*' dpms off"; fi'\
 		timeout 15  'if pgrep -x swaylock; then swaymsg "output '*' dpms off"; fi'\
 		resume 'swaymsg "output '*' dpms on"'\
 		before-sleep 'playerctl pause'
@@ -269,20 +269,20 @@
 	font pango:'Hasklug Nerd Font' 12
 
 	# Colors
-	set $brF #81559bdd
+	set $brF #1b0329e8
 	set $brN #bfacc855
 	set $brU #4e0110
 
 	set $bgF #81559bdd
 	set $bgN #bfacc855
 	set $bgU #881600
-	set $bgB #81559b44
+	set $bgB #1b0329e8
 
 	set $txF #c8c6d7
 	set $txN #bfacc8
 	set $txU #e3e36a
 
-	set $inF #c8f4b9
+	set $inF #39ff14
 	set $inN #bfacc855
 	
 	# Note:
@@ -298,7 +298,7 @@
 		# [in] indicator: The color used to indicate where a new view will open.
 	
 	# class						border	bckGrnd	text	indctr
-	client.focused				$brF	$bgF	$txF	$inF
+	client.focused				$brF	$brF	$txF	$inF
 	client.focused_inactive		$brN	$bgN	$txN	$inN
 	client.unfocused			$brN	$bgN	$txN	$inN
 	client.urgent				$brU	$bgU	$txU	$inF
