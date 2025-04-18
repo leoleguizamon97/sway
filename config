@@ -47,7 +47,7 @@
 ### Idle configuration
 
 	exec swayidle -w \
-		timeout 300 'swaylock -f -e -K -c 0000' \
+		timeout 300 'swaylock \
 		timeout 310 'if pgrep -x swaylock; then swaymsg "output '*' dpms off"; fi'\
 		timeout 15  'if pgrep -x swaylock; then swaymsg "output '*' dpms off"; fi'\
 		resume 'swaymsg "output '*' dpms on"'\
@@ -220,7 +220,7 @@
 	#bindsym XF86LaunchB 					exec 
 
 	# Teclas de bloqueo y sesion
-	bindsym XF86ScreenSaver					exec swaylock -f -e -K
+	bindsym XF86ScreenSaver					exec swaylock
 	bindsym XF86Sleep						exec systemctl suspend
 
 	# Teclas multimedia adicionales
@@ -228,7 +228,7 @@
 	#bindsym XF86AudioMedia					exec 
 
 	#Teclas combinadas (Teclas de hardware que son combinaciones de otras) 
-	bindsym $mod+l							exec swaylock -f -e -K
+	bindsym $mod+l							exec swaylock
 	bindsym $mod+Shift+s					exec  ~/.config/sway/screenshot.sh 0
 	
 	bindsym $mod+i 							exec 							 #Boton Internet
@@ -247,7 +247,7 @@
 
 		set $mode_system   [L] Lock 󰌾  [S] Suspend 󰒲   [Shift+E] Exit 󰗽  [Shift+R] Reboot 󰦛  [Shift+S] Power off  
 		mode "$mode_system" {
-			bindsym l exec swaylock -f -e -K -c 0000
+			bindsym l exec swaylock
 			bindsym s exec --no-startup-id systemctl suspend, mode "default"
 			bindsym Shift+e exit
 			bindsym Shift+r exec --no-startup-id systemctl reboot, mode "default"
@@ -388,7 +388,7 @@
 			#Pantalla Integrada (Laptop)
 			output eDP-1 
 			{
-				# mode 1366x768
+				mode 1366x768
 				pos 1920 0
 				scale 1.0
 				transform normal
