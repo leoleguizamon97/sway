@@ -14,7 +14,7 @@ while true; do
 		SSID=$(nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -d: -f2)
 		SSID="$SSID 󰤨"
 	elif [ "$TYPE" = "ethernet" ]; then
-		if [[ "$DEVICE" == enx* || "$DEVICE" == usb* ]]; then
+		if [[ "$DEVICE" == enx* ]] || [[ "$DEVICE" == usb* ]]; then
 			SSID="Bridged 󰌘"
 		else
 			SSID="$DEVICE 󰈀"
@@ -37,15 +37,10 @@ while true; do
 #### Estado de la batería ####
 
 	# Obtener fuente de energía
-	#AC=$(cat /sys/class/power_supply/AC0/online)
-	
-	AC_PATH=$(find /sys/class/power_supply/ -maxdepth 1 -type d -name "AC*" | head -n1)
-	BAT_PATH=$(find /sys/class/power_supply/ -maxdepth 1 -type d -name "BAT*" | head -n1)
-	AC=$(cat "$AC_PATH/online")
-	BATTERY=$(cat "$BAT_PATH/capacity")
+	AC=$(cat /sys/class/power_supply/AC0/online)
 	
 	# Obtener nivel de batería
-	# BATTERY=$(cat /sys/class/power_supply/BAT0/capacity)
+	BATTERY=$(cat /sys/class/power_supply/BAT0/capacity)
 	# Cambiar icono dependiendo del nivel de batería
 	if [ "$BATTERY" -gt "90" ]; then
 		BATTERY="$BATTERY $( [ "$AC" -eq 1 ] && echo '󰂅' || echo '󰁹' )"
@@ -93,10 +88,9 @@ while true; do
 	
 #### Obtener brillo ####
 	SCREEN=false
-	if [[ "$CHASSIS" == "laptop" || "$CHASSIS" == "convertible" || "$CHASSIS" == "tablet" || "$CHASSIS" == "handset" ]]; then
+	if [ "$CHASSIS" = "laptop" ] || [ "$CHASSIS" = "convertible" ] || [ "$CHASSIS" = "tablet" ] || [ "$CHASSIS" = "handset" ]; then
 		SCREEN=true
 	fi
-
 	if [ "$SCREEN" = true ]; then
 		# Obtener brillo
 		BRIGHTNESS=$(brightnessctl get)
@@ -127,8 +121,19 @@ while true; do
 	TIME=$(date +"%H:%M ")󱑅
 
 	# Obtener temperatura
-	TEMP=$(cat /sys/class/thermal/thermal_zone0/temp | awk '{print $1/1000}')
-
+	TEMP=100
+	TEMP=""
+	for zone in /sys/class/thermal/thermal_zone*; do
+		type=$(<"$zone/type")
+		if [[ "$type" == "x86_pkg_temp" ]]; then
+			raw_temp=$(<"$zone/temp")
+			TEMP=$(awk "BEGIN { printf \"%.1f\", $raw_temp / 1000 }")
+			break
+		fi
+	done
+	
+	TEMP=$(sensors | awk '/Core 0:/ { print $3; exit }' | tr -d '+°C')
+	
 	if [ "$TEMP" -ge 65 ]; then
 		TEMP="$TEMP󰔄 "
 	elif [ "$TEMP" -ge 50 ]; then
@@ -138,20 +143,20 @@ while true; do
 	else
 		TEMP="$TEMP󰔄 "
 	fi
-
+	
 #### Imprimir barra ####
 
 	# Tipo de barra segun segun chasis
 	if [ "$CHASSIS" = "vm" ]; then
 		echo -n " $WINDOW  $SSID  $IP    $DATE   $TIME "
-	elif [ "$CHASSIS" = "laptop" ]; then
-		echo -n " $WINDOW  $SSID  $IP  $VOL  $BRIGHTNESS  $BATTERY  $TEMP  $DATE   $TIME "
 	elif [ "$CHASSIS" = "desktop" ]; then
 		echo -n " $WINDOW  $SSID  $IP  $VOL  $TEMP  $DATE   $TIME "
+	elif [ "$SCREEN" = true ]; then
+		echo -n " $WINDOW  $SSID  $IP  $VOL  $BRIGHTNESS  $BATTERY  $TEMP  $DATE   $TIME "
 	else
 		echo -n " $WINDOW  $SSID  $IP  $VOL  $DATE   $TIME "
 	fi
-	sleep 1
+	sleep 0.5
 
 done
 
